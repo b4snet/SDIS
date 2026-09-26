@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SDIS — Swasthya Diagnostic Information System</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --panel2: #1c2333; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --green: #3fb950; --amber: #d29922;
+    --blue: #58a6ff; --purple: #bc8cff; --red: #f85149;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+  .eyebrow { color: var(--muted); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  h1 { margin: 6px 0 4px; font-size: 30px; font-weight: 650; }
+  h1 span { color: var(--blue); }
+  .sub { color: var(--muted); max-width: 78ch; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge {
+    border: 1px solid var(--border); background: var(--panel); border-radius: 999px;
+    padding: 4px 12px; font-size: 12.5px; color: var(--text);
+  }
+  .badge b { color: var(--green); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 24px; }
+  .card { min-width: 0; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px;
+  }
+  .card h2 { margin: 0 0 12px; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  td { padding: 6px 8px; border-top: 1px solid var(--border); vertical-align: top; }
+  tr:first-child td { border-top: none; }
+  td:first-child { color: var(--muted); }
+  .ok { color: var(--green); font-weight: 600; }
+  .def { color: var(--amber); font-weight: 600; }
+  .flow {
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; font-family: ui-monospace, Consolas, monospace; font-size: 13px;
+    line-height: 1.9; overflow-x: auto;
+  }
+  .flow b { color: var(--blue); font-weight: 600; }
+  .flow i { color: var(--muted); font-style: normal; }
+  .arrow { color: var(--purple); }
+  ul.tight { margin: 0; padding-left: 18px; }
+  ul.tight li { margin: 5px 0; }
+  .docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; font-size: 13.5px; }
+  .docs a { display: block; padding: 3px 0; }
+  .note {
+    border-left: 3px solid var(--amber); background: rgba(210,153,34,.08);
+    padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 13.5px; margin-top: 16px;
+  }
+  .note.green { border-left-color: var(--green); background: rgba(63,185,80,.08); }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--border); padding-top: 14px; }
+  code { background: var(--panel2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Swasthya Diagnostic Information System</div>
+  <h1>SDIS <span>·</span> Foundation Complete — Step 35 Gate</h1>
+  <p class="sub">Standards-first, modality-extensible diagnostic information platform.
+  Initial scope: laboratory. Steps 1–34 audited as one integrated system: patient → encounter →
+  order → specimen/accession → worklist → result → verification → finalization → report →
+  patient access, with billing, inventory, QC/quality, documents, integrations, and notifications —
+  over fail-closed authentication + RBAC, RLS tenant isolation, a hash-chained audit ledger,
+  full observability, and verified backup/restore drills. <b>Complete</b> means a tested,
+  coherent base — <b>not</b> production-ready: no HA/PITR, no live standards integrations.
+  Nothing is deployed.</p>
+  <div class="badges">
+    <span class="badge">Tests <b>894 / 894 pass</b></span>
+    <span class="badge">Suites <b>93</b></span>
+    <span class="badge">Build / typecheck <b>pass</b></span>
+    <span class="badge">Lint <b>0 warnings</b></span>
+    <span class="badge">Format <b>clean</b></span>
+    <span class="badge">npm audit <b>0 vulnerabilities</b></span>
+    <span class="badge">Gate <b>FOUNDATION COMPLETE</b></span>
+  </div>
+</header>
+
+<div class="grid">
+
+  <div class="card">
+    <h2>Laboratory flow (implemented)</h2>
+    <div class="flow">
+      Patient <span class="arrow">→</span> Encounter <span class="arrow">→</span> <b>Diagnostic Order</b> <span class="arrow">→</span> Item<br>
+      &nbsp;&nbsp;<span class="arrow">→</span> <b>Specimen</b> (accession at RECEIVED) <span class="arrow">→</span> <b>Observation</b><br>
+      &nbsp;&nbsp;<span class="arrow">→</span> Interpretation <span class="arrow">→</span> <b>Report</b> · verify → finalize → amend<br>
+      &nbsp;&nbsp;<i>worklists · QC holds gate finalization · priority ROUTINE/URGENT/EMERGENCY</i>
+      <br><br>
+      <i>HTTP <span class="arrow">→</span> DTO mapping <span class="arrow">→</span> application services
+      <span class="arrow">→</span> domain <span class="arrow">→</span> PostgreSQL (RLS)</i>
+    </div>
+    <div class="note">Observation ≠ Interpretation ≠ Report — distinct at the type level.
+    FINALIZED versions are immutable; amendments are reason-bound, manager-tier, append-only.
+    QC never rewrites patient results.</div>
+  </div>
+
+  <div class="card">
+    <h2>HTTP transport — /api/v1 (GET · POST)</h2>
+    <table>
+      <tr><td>POST</td><td>/patients · /diagnostic-orders · /order-items/{id}/specimens · observations · interpretations</td></tr>
+      <tr><td>POST</td><td>/diagnostic-orders/{id}/transitions · /specimens/{id}/transitions (accession)</td></tr>
+      <tr><td>POST</td><td>/reports/{id}/finalize · /reports/{id}/amendments · /quality/records · /quality/holds/release</td></tr>
+      <tr><td>GET·POST</td><td>/terminology · /charges · /devices/{id}/acquisitions · /documents · /inventory · /setup · /departments</td></tr>
+      <tr><td>GET</td><td>/worklist · /worklists · /patient/reports · /patient/documents (ownership-scoped)</td></tr>
+      <tr><td>Ops</td><td>/healthz (liveness) · /readyz (readiness) · /metrics (bounded counters)</td></tr>
+    </table>
+    <div class="note">Explicit verbs only — no generic PATCH/PUT state mutation. Statuses:
+    400 · 401 (+<code>WWW-Authenticate</code>) · 403 · 404 · 405 · 409 (incl.
+    <code>IDEMPOTENCY_CONFLICT</code>) · 413 · 415 · 422 · 500 generic-only. Errors always use
+    <code>{ error: { code, message, correlationId, details } }</code>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Module status (Steps 1–34)</h2>
+    <table>
+      <tr><td>Lab flow · specimens · results · reports</td><td class="ok">Implemented</td></tr>
+      <tr><td>Worklists (keyset, RBAC) · governance</td><td class="ok">Implemented</td></tr>
+      <tr><td>Billing (charges) · inventory ledger · QC</td><td class="ok">Implemented</td></tr>
+      <tr><td>Documents · patient access · integrations · notifications</td><td class="ok">Implemented</td></tr>
+      <tr><td>Auth (fail-closed bearer) · RBAC · tenant RLS</td><td class="ok">Implemented</td></tr>
+      <tr><td>Audit (hash-chained) · idempotency (fingerprinted)</td><td class="ok">Implemented</td></tr>
+      <tr><td>Observability · backup/restore drills · runbooks</td><td class="ok">Implemented</td></tr>
+      <tr><td>Invoices/payments · HA/PITR · tracing</td><td class="def">Deferred</td></tr>
+      <tr><td>FHIR · HL7 · DICOM · IHE</td><td class="def">Boundary only — no claims</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Verification (this machine)</h2>
+    <table>
+      <tr><td>npm run verify</td><td class="ok">EXIT 0 — green end-to-end</td></tr>
+      <tr><td>Tests</td><td><b>894 pass / 0 fail</b> (233 suites)</td></tr>
+      <tr><td>Foundation gate (Step 35)</td><td class="ok">FOUNDATION COMPLETE — 35-area matrix</td></tr>
+      <tr><td>Security</td><td>fail-closed 401/403 · RLS negative tests · secret sweep clean</td></tr>
+      <tr><td>Recovery</td><td>backup → destroy → restore → verify (audit chain, RLS, immutability)</td></tr>
+      <tr><td>Idempotency</td><td>facility-scoped; same-key/different-payload → 409 fingerprint guard</td></tr>
+      <tr><td>Concurrency</td><td>version-CAS on order/specimen (PG + in-memory) · stock-floor atomic</td></tr>
+    </table>
+    <div class="note green">"Complete" = the Foundation layer is coherent, tested, and honestly
+    documented — NOT a production-readiness claim (see PRODUCTION_READINESS.md).</div>
+  </div>
+
+  <div class="card">
+    <h2>Running locally</h2>
+    <ul class="tight">
+      <li><code>npm ci</code> — install pinned dependencies</li>
+      <li><code>npm run build</code> — compile to <code>dist/</code></li>
+      <li><code>npm run verify</code> — full gate (boots ~9 disposable PostgreSQL instances, ~10 min)</li>
+      <li><code>node --test --test-concurrency=1 "dist/tests/transport/*.test.js"</code> — transport only</li>
+      <li><code>npm run backup · verify-restore · ops-check</code> — operator tooling</li>
+    </ul>
+    <div class="note">Full procedures, including artifact reproduction and port notes:
+    <code>.freebuff/run.md</code>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Documentation</h2>
+    <div class="docs">
+      <a href="../docs/PROJECT_STATUS.md">PROJECT_STATUS</a>
+      <a href="../docs/FOUNDATION_GATE.md">FOUNDATION_GATE</a>
+      <a href="../docs/ARCHITECTURE.md">ARCHITECTURE</a>
+      <a href="../docs/API_CONTRACTS.md">API_CONTRACTS</a>
+      <a href="../docs/SECURITY.md">SECURITY</a>
+      <a href="../docs/RBAC.md">RBAC</a>
+      <a href="../docs/TENANCY.md">TENANCY</a>
+      <a href="../docs/DATA_INTEGRITY.md">DATA_INTEGRITY</a>
+      <a href="../docs/DATABASE.md">DATABASE</a>
+      <a href="../docs/AUDIT_PROVENANCE.md">AUDIT_PROVENANCE</a>
+      <a href="../docs/OPERATIONS.md">OPERATIONS</a>
+      <a href="../docs/RUNBOOKS.md">RUNBOOKS</a>
+      <a href="../docs/PRODUCTION_READINESS.md">PRODUCTION_READINESS</a>
+      <a href="../docs/CLINICAL_SAFETY.md">CLINICAL_SAFETY</a>
+      <a href="../docs/QUALITY_MANAGEMENT.md">QUALITY_MANAGEMENT</a>
+      <a href="../docs/STANDARDS.md">STANDARDS</a>
+      <a href="../docs/INTEROPERABILITY.md">INTEROPERABILITY</a>
+      <a href="../docs/TESTING_STRATEGY.md">TESTING_STRATEGY</a>
+      <a href="../docs/DEVELOPMENT_LOG.md">DEVELOPMENT_LOG</a>
+      <a href="../docs/COMPLIANCE_REGISTER.md">COMPLIANCE_REGISTER</a>
+      <a href="../docs/DEPLOYMENT.md">DEPLOYMENT</a>
+      <a href="../docs/MASTER_RULES.md">MASTER_RULES</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Repository: b4snet/SDIS · HEAD 75dd525 (all work in uncommitted working tree) ·
+  Foundation gate: COMPLETE (Step 35, 2026-09-25) ·
+  No certification, accreditation, or HL7 / FHIR / DICOM / IHE conformance is claimed —
+  design intent and architectural boundaries only · Synthetic data only, no PHI.
+</footer>
+
+</div>
+</body>
+</html>

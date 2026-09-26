@@ -1,0 +1,29 @@
+# Node / TypeScript
+node_modules/
+dist/
+coverage/
+
+# Environment — never commit real configuration
+.env
+.env.*
+!.env.example
+
+# Logs & temp
+*.log
+npm-debug.log*
+*.tmp
+tmp/
+
+# Databases & dumps (never commit local data)
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+data/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
